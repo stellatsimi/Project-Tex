@@ -68,6 +68,7 @@ CREATE TABLE invoice(
 );
 
 CREATE TABLE product_Invoice(
+	prod_id int AUTO_INCREMENT,
 	prod_inv_name VARCHAR(200),
 	prod_inv_id int,
     prod_inv_fpa int,
@@ -75,9 +76,7 @@ CREATE TABLE product_Invoice(
     prod_inv_quantity INT,
     prod_inv_quantity_type enum('τεμάχια', 'κουτιά', 'εξάδες', 'κιλά', 'πακέτα', 'γραμμάρια', 'λίτρα'),
     
-    PRIMARY KEY(prod_inv_name),
-    CONSTRAINT FK_prod_inv_name FOREIGN KEY(prod_inv_name) REFERENCES product_Storage(product_name)
-    ON UPDATE CASCADE ON DELETE CASCADE,
+    PRIMARY KEY(prod_id),
     CONSTRAINT FK_prod_inv_id FOREIGN KEY(prod_inv_id) REFERENCES invoice(invoice_id)
     ON DELETE CASCADE ON UPDATE CASCADE 
 );
@@ -107,7 +106,7 @@ CREATE TABLE receipt(
 );
 
 CREATE TABLE product_Receipt(
-	prod_rec_name VARCHAR(200) UNIQUE,
+	prod_rec_name VARCHAR(200),
     prod_rec_id int,
     prod_rec_quantity float,
     prod_rec_quantity_type enum('τεμάχια', 'κουτιά', 'εξάδες', 'κιλά', 'πακέτα', 'γραμμάρια', 'λίτρα'),
@@ -135,8 +134,6 @@ CREATE TABLE product_Order(
     quantity_type enum('τεμάχια', 'κουτιά', 'εξάδες', 'κιλά', 'πακέτα', 'γραμμάρια', 'λίτρα'),
     
     PRIMARY KEY(prod_order_name),
-    CONSTRAINT FK_prod_order_name FOREIGN KEY(prod_order_name) REFERENCES product_Storage(product_name)
-    ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT FK_prod_order_id FOREIGN KEY(prod_order_id) REFERENCES orders(order_id)
     ON DELETE CASCADE ON UPDATE CASCADE
 );
@@ -168,4 +165,33 @@ CREATE TABLE IF NOT EXISTS scanner(
     current_barcode BIGINT,
     
     PRIMARY KEY(device_name)
-);	
+);
+
+INSERT INTO supplier VALUES (null, 'Κυριακόπουλος', '6984536243', '123423621', 'kyriakopoylos@gmail.com', 'Βάρθου 34');
+INSERT INTO supplier VALUES (null, 'Πετρίδης', '6984636841', '043926623', 'petridis@gmail.com', 'Τράτου 22');
+
+INSERT INTO invoice VALUES (null, '1', 'cash', '620', '2024-05-22 12:00:00');
+INSERT INTO invoice VALUES (null, '1', 'cash', '730', '2023-05-19 12:00:00');
+INSERT INTO invoice VALUES (null, '1', 'cash', '500', '2024-05-12 12:00:00');
+INSERT INTO invoice VALUES (null, '1', 'cash', '1000', '2024-04-12 12:00:00');
+
+INSERT INTO product_Invoice VALUES (null, 'ΟΛΥΜΠΟΣ τυρί κεφαλοτύρι πρόβειο τριμμένο 150gr', '1', '13', '2.30', '100', 'τεμάχια');
+INSERT INTO product_Invoice VALUES (null, 'Γάλα ΟΛΥΜΠΟΣ κατσικίσιο 3,5% λιπαρά βιολογικό (1lt)', '1', '13', '3.40', '50', 'τεμάχια');
+INSERT INTO product_Invoice VALUES (null, 'Γιαούρτι ΟΛΥΜΠΟΣ στραγγιστό 5% (3x200g)', '1', '13', '4.40', '50', 'τεμάχια');
+
+INSERT INTO product_Invoice VALUES (null, 'ΟΛΥΜΠΟΣ τυρί κεφαλοτύρι πρόβειο τριμμένο 150gr', '2', '13', '2.30', '95', 'τεμάχια');
+INSERT INTO product_Invoice VALUES (null, 'Γάλα ΟΛΥΜΠΟΣ κατσικίσιο 3,5% λιπαρά βιολογικό (1lt)', '2', '13', '3.40', '45', 'τεμάχια');
+INSERT INTO product_Invoice VALUES (null, 'Γιαούρτι ΟΛΥΜΠΟΣ στραγγιστό 5% (3x200g)', '2', '13', '4.40', '40', 'τεμάχια');
+INSERT INTO product_Invoice VALUES (null, 'ΟΛΥΜΠΟΣ κεφίρ φράουλα 330ml', '2', '13', '2.20', '30', 'τεμάχια');
+
+INSERT INTO product_Invoice VALUES (null, 'ΟΛΥΜΠΟΣ τυρί κεφαλοτύρι πρόβειο τριμμένο 150gr', '3', '13', '2.30', '80', 'τεμάχια');
+INSERT INTO product_Invoice VALUES (null, 'Γάλα ΟΛΥΜΠΟΣ κατσικίσιο 3,5% λιπαρά βιολογικό (1lt)', '3', '13', '3.40', '60', 'τεμάχια');
+INSERT INTO product_Invoice VALUES (null, 'Γιαούρτι ΟΛΥΜΠΟΣ στραγγιστό 5% (3x200g)', '3', '13', '4.40', '45', 'τεμάχια');
+
+INSERT INTO product_Invoice VALUES (null, 'ΟΛΥΜΠΟΣ τυρί κεφαλοτύρι πρόβειο τριμμένο 150gr', '4', '13', '2.30', '30', 'τεμάχια');
+INSERT INTO product_Invoice VALUES (null, 'Γάλα ΟΛΥΜΠΟΣ κατσικίσιο 3,5% λιπαρά βιολογικό (1lt)', '4', '13', '3.40', '20', 'τεμάχια');
+INSERT INTO product_Invoice VALUES (null, 'Γιαούρτι ΟΛΥΜΠΟΣ στραγγιστό 5% (3x200g)', '4', '13', '4.40', '20', 'τεμάχια');
+
+SELECT invoice_id, prod_inv_name, prod_inv_quantity
+FROM product_Invoice INNER JOIN invoice
+ON invoice_id = prod_inv_id;

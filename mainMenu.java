@@ -3,7 +3,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package simple;
-
+import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -43,7 +57,22 @@ public class mainMenu extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
         jPanel9 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        automated_order_table = new javax.swing.JTable();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jButton8 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        automated_order_jcb = new javax.swing.JComboBox<>();
+        jButton12 = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
@@ -119,6 +148,11 @@ public class mainMenu extends javax.swing.JFrame {
         jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton3MouseClicked(evt);
+            }
+        });
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
             }
         });
 
@@ -226,11 +260,11 @@ public class mainMenu extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1146, Short.MAX_VALUE)
+            .addGap(0, 1165, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 693, Short.MAX_VALUE)
+            .addGap(0, 705, Short.MAX_VALUE)
         );
 
         jPanel6.setBackground(new java.awt.Color(204, 51, 255));
@@ -239,11 +273,11 @@ public class mainMenu extends javax.swing.JFrame {
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1104, Short.MAX_VALUE)
+            .addGap(0, 1158, Short.MAX_VALUE)
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 657, Short.MAX_VALUE)
+            .addGap(0, 705, Short.MAX_VALUE)
         );
 
         jPanel7.setBackground(new java.awt.Color(255, 51, 255));
@@ -261,28 +295,177 @@ public class mainMenu extends javax.swing.JFrame {
 
         jPanel8.setBackground(new java.awt.Color(255, 0, 0));
 
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1122, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(281, 281, 281)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(425, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 669, Short.MAX_VALUE)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(71, 71, 71)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(207, Short.MAX_VALUE))
         );
 
-        jPanel9.setBackground(new java.awt.Color(255, 255, 0));
+        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+
+        automated_order_table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Προϊόν", "Ποσότητα", "Είδος Ποσότητας"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(automated_order_table);
+
+        jLabel2.setText("Όνομα Προϊόντος");
+
+        jLabel3.setText("Ποσότητα");
+
+        jButton8.setText("Προσθήκη Προϊόντος");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jButton9.setText("Τροποποίηση Προϊόντος");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
+        jButton10.setText("Διαγραφή Προϊόντος");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
+
+        jButton11.setText("Λήψη Παραγγελίας");
+        jButton11.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton11MouseClicked(evt);
+            }
+        });
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Επιλογή Προμηθευτή");
+
+        automated_order_jcb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                automated_order_jcbActionPerformed(evt);
+            }
+        });
+
+        jButton12.setText("Ανανέωση Δεδομένων");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1158, Short.MAX_VALUE)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addGap(64, 64, 64)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addGap(288, 288, 288)
+                                .addComponent(automated_order_jcb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                                        .addComponent(jLabel3)
+                                        .addGap(29, 29, 29))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                                        .addComponent(jLabel2)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jTextField1)
+                                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE))))
+                        .addGap(74, 74, 74)))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 621, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jButton12)
+                .addGap(213, 213, 213)
+                .addComponent(jButton11)
+                .addGap(95, 95, 95))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 705, Short.MAX_VALUE)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(91, 91, 91)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(automated_order_jcb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addGap(196, 196, 196)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(39, 39, 39)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(95, 95, 95)
+                        .addComponent(jButton8)
+                        .addGap(28, 28, 28)
+                        .addComponent(jButton9)
+                        .addGap(26, 26, 26)
+                        .addComponent(jButton10))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(35, 35, 35)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 617, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton11)
+                    .addComponent(jButton12))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         jPanel10.setBackground(new java.awt.Color(0, 102, 0));
@@ -431,9 +614,7 @@ public class mainMenu extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, 0)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -551,6 +732,160 @@ public class mainMenu extends javax.swing.JFrame {
         jPanel12.setVisible(true);
     }//GEN-LAST:event_jButton7MouseClicked
 
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Connection myConn = null;
+        Statement stm = null;
+        ResultSet myRs = null;
+        
+        String user = "root";
+        String pass = "Skazas082002";
+        
+        try{
+                myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/simple", user, pass);
+               
+                String sql1 = "SELECT supplier_name FROM supplier";
+                stm = myConn.createStatement();
+                myRs = stm.executeQuery(sql1);
+                if(automated_order_jcb.getItemCount() == 0){
+                    while(myRs.next()){
+                        String code = myRs.getString("supplier_name");
+                        automated_order_jcb.addItem(code);
+                    }
+                }
+        }catch(SQLException exc){
+               exc.printStackTrace();
+        }finally{
+            try{
+                if(myRs != null){
+                    myRs.close();
+                }
+                if(stm != null){
+                    stm.close();
+                }
+                if(myConn != null){
+                    myConn.close();
+                }
+            }catch(SQLException exc){
+                   exc.printStackTrace();
+            }
+        }     
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void automated_order_jcbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_automated_order_jcbActionPerformed
+        String selectedItem = (String) automated_order_jcb.getSelectedItem();
+        Connection myConn = null;
+        Statement stm = null;
+        ResultSet myRs = null;
+        PreparedStatement pstmt = null;
+        
+        String user = "root";
+        String pass = "Skazas082002";
+        
+        try{
+                myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/simple", user, pass);
+                
+                LocalDate currentDate = LocalDate.now();
+                DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MM");
+                String currentMonth = currentDate.format(monthFormatter);
+        
+                String sql2 = "SELECT prod_inv_name, ROUND(AVG(prod_inv_quantity)) AS av_quantity, prod_inv_quantity_type FROM product_Invoice JOIN Invoice ON prod_inv_id = invoice_id JOIN supplier ON inv_supplier_id = supplier_id WHERE supplier_name = ? AND MONTH(date) = ? GROUP BY prod_inv_name";
+                pstmt = myConn.prepareStatement(sql2);
+                pstmt.setString(1, selectedItem);
+                pstmt.setString(2, currentMonth);
+                myRs = pstmt.executeQuery();
+                ArrayList<automatedOrder> usersList = new ArrayList<>();
+                automatedOrder autOr;
+                while(myRs.next()){
+                    autOr = new automatedOrder(myRs.getString("prod_inv_name"), myRs.getInt("av_quantity"), myRs.getString("prod_inv_quantity_type"));
+                    usersList.add(autOr);    
+                }
+                DefaultTableModel model = (DefaultTableModel)automated_order_table.getModel();
+                model.setRowCount(0);
+                Object[] row = new Object[3];
+                for(int i = 0; i<usersList.size(); i++){
+                    row[0] = usersList.get(i).getprod_inv_name();
+                    row[1] = usersList.get(i).getav_quantity();
+                    row[2] = usersList.get(i).getprod_inv_quantity_type();
+                    model.addRow(row);
+                }
+                
+        }catch(SQLException exc){
+               exc.printStackTrace();
+        }finally{
+            try{
+                if(myRs != null){
+                    myRs.close();
+                }
+                if(stm != null){
+                    stm.close();
+                }
+                if(myConn != null){
+                    myConn.close();
+                }
+            }catch(SQLException exc){
+                   exc.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_automated_order_jcbActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+            
+        int selectedRow = automated_order_table.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a row to remove.");
+            return;
+        }
+        DefaultTableModel model = (DefaultTableModel)automated_order_table.getModel();
+        model.removeRow(selectedRow);     
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void extractInvoice(){
+        String selectedItem = (String) automated_order_jcb.getSelectedItem();
+        
+        JFileChooser fileChooser = new JFileChooser();
+        int userSelection = fileChooser.showSaveDialog(this);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            try {
+                FileWriter writer = new FileWriter(fileChooser.getSelectedFile());
+                writer.write(selectedItem + "\n");
+
+                int numRows = automated_order_table.getRowCount();
+                int numCols = automated_order_table.getColumnCount();
+
+                for (int i = 0; i < numCols-1; i++) {
+                    writer.write(automated_order_table.getColumnName(i) + "\t\t\t\t\t");
+                }
+                writer.write("\n");
+
+                for (int i = 0; i < numRows; i++) {
+                    for (int j = 0; j < numCols-1; j++) {
+                        writer.write(automated_order_table.getValueAt(i, j).toString() + "\t");
+                    }
+                    writer.write("\n");
+                }
+                writer.close();
+            } catch (IOException ex) {
+                Logger.getLogger(mainMenu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        extractInvoice();
+    }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton11MouseClicked
+
+    }//GEN-LAST:event_jButton11MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -563,14 +898,24 @@ public class mainMenu extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> automated_order_jcb;
+    private javax.swing.JTable automated_order_table;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -583,5 +928,10 @@ public class mainMenu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
