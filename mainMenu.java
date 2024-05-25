@@ -2,34 +2,37 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package simple;
-import java.sql.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JOptionPane;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+
+
+import java.awt.event.ActionEvent;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JFileChooser;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author USER
- */
+
 public class mainMenu extends javax.swing.JFrame {
 
     /**
      * Creates new form mainMenu
      */
-    public mainMenu() {
+    public mainMenu() throws SQLException, ClassNotFoundException {
         initComponents();
+        addListener();
+        addSearchBox();
+        saveChanges();
     }
 
     /**
@@ -55,34 +58,43 @@ public class mainMenu extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
+        jLabel7 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jPanel9 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        automated_order_table = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-        jLabel4 = new javax.swing.JLabel();
-        automated_order_jcb = new javax.swing.JComboBox<>();
-        aut_prod_name_jtf = new javax.swing.JTextField();
-        aut_prod_quan_jtf = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        quan_type_jcb = new javax.swing.JComboBox<>();
         jPanel10 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
+        searchText = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        attribute1Field = new javax.swing.JTextField();
+        attribute2Field = new javax.swing.JTextField();
+        attribute4Field = new javax.swing.JTextField();
+        saveButton = new javax.swing.JButton();
+        ProductTable = new javax.swing.JScrollPane();
+        Products = new javax.swing.JTable();
+        jButton8 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        attribute3Field = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jPanel13 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jLabel8 = new javax.swing.JLabel();
+        jButton9 = new javax.swing.JButton();
+        jTextField3 = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel2.setBackground(new java.awt.Color(0, 204, 204));
+        jPanel2.setBackground(new java.awt.Color(0, 153, 180));
         jPanel2.setAlignmentX(0.0F);
         jPanel2.setAlignmentY(0.0F);
 
@@ -95,9 +107,9 @@ public class mainMenu extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(727, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(605, 605, 605))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(602, 602, 602))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -107,7 +119,7 @@ public class mainMenu extends javax.swing.JFrame {
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
-        jPanel3.setBackground(new java.awt.Color(51, 153, 255));
+        jPanel3.setBackground(new java.awt.Color(0, 153, 204));
 
         jButton1.setBackground(new java.awt.Color(51, 204, 255));
         jButton1.setFont(new java.awt.Font("Segoe UI Variable", 1, 14)); // NOI18N
@@ -149,11 +161,6 @@ public class mainMenu extends javax.swing.JFrame {
         jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jButton3MouseClicked(evt);
-            }
-        });
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
             }
         });
 
@@ -250,7 +257,7 @@ public class mainMenu extends javax.swing.JFrame {
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(274, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
@@ -261,24 +268,45 @@ public class mainMenu extends javax.swing.JFrame {
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1165, Short.MAX_VALUE)
+            .addGap(0, 1146, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 705, Short.MAX_VALUE)
+            .addGap(0, 693, Short.MAX_VALUE)
         );
 
-        jPanel6.setBackground(new java.awt.Color(204, 51, 255));
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+
+        jLabel7.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jLabel7.setText("ΚΩΔΙΚΟΣ ΧΡΗΣΤΗ");
+        jLabel7.setMaximumSize(new java.awt.Dimension(170, 22));
+        jLabel7.setMinimumSize(new java.awt.Dimension(170, 22));
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1158, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(483, 483, 483)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
+                    .addComponent(jTextField1))
+                .addContainerGap(517, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 705, Short.MAX_VALUE)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(182, 182, 182)
+                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(527, Short.MAX_VALUE))
         );
 
         jPanel7.setBackground(new java.awt.Color(255, 51, 255));
@@ -296,182 +324,28 @@ public class mainMenu extends javax.swing.JFrame {
 
         jPanel8.setBackground(new java.awt.Color(255, 0, 0));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(281, 281, 281)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(425, Short.MAX_VALUE))
+            .addGap(0, 1122, Short.MAX_VALUE)
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(71, 71, 71)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(207, Short.MAX_VALUE))
+            .addGap(0, 669, Short.MAX_VALUE)
         );
 
-        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
-
-        automated_order_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Προϊόν", "Ποσότητα", "Είδος Ποσότητας"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        automated_order_table.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                automated_order_tableMouseClicked(evt);
-            }
-        });
-        jScrollPane2.setViewportView(automated_order_table);
-
-        jLabel2.setText("Όνομα Προϊόντος");
-
-        jLabel3.setText("Ποσότητα");
-
-        jButton8.setText("Προσθήκη Προϊόντος");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
-
-        jButton9.setText("Τροποποίηση Προϊόντος");
-        jButton9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton9ActionPerformed(evt);
-            }
-        });
-
-        jButton10.setText("Διαγραφή Προϊόντος");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
-            }
-        });
-
-        jButton11.setText("Λήψη Παραγγελίας");
-        jButton11.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton11MouseClicked(evt);
-            }
-        });
-        jButton11.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton11ActionPerformed(evt);
-            }
-        });
-
-        jLabel4.setText("Επιλογή Προμηθευτή");
-
-        automated_order_jcb.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                automated_order_jcbActionPerformed(evt);
-            }
-        });
-
-        aut_prod_name_jtf.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                aut_prod_name_jtfActionPerformed(evt);
-            }
-        });
-
-        jLabel5.setText("Είδος Ποσότητας");
+        jPanel9.setBackground(new java.awt.Color(255, 255, 0));
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(64, 64, 64)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(139, 139, 139)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(150, 150, 150)
-                        .addComponent(jLabel3)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(automated_order_jcb, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(aut_prod_name_jtf)
-                    .addComponent(aut_prod_quan_jtf)
-                    .addComponent(quan_type_jcb, 0, 151, Short.MAX_VALUE))
-                .addGap(56, 56, 56)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 621, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton11)
-                .addGap(248, 248, 248))
+            .addGap(0, 1158, Short.MAX_VALUE)
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(99, 99, 99)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(automated_order_jcb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))
-                        .addGap(116, 116, 116)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(aut_prod_name_jtf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(25, 25, 25)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(aut_prod_quan_jtf, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(quan_type_jcb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(129, 129, 129)
-                        .addComponent(jButton8)
-                        .addGap(28, 28, 28)
-                        .addComponent(jButton9)
-                        .addGap(26, 26, 26)
-                        .addComponent(jButton10))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(35, 35, 35)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 617, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton11)
-                .addContainerGap(18, Short.MAX_VALUE))
+            .addGap(0, 705, Short.MAX_VALUE)
         );
 
         jPanel10.setBackground(new java.awt.Color(0, 102, 0));
@@ -500,24 +374,240 @@ public class mainMenu extends javax.swing.JFrame {
             .addGap(0, 693, Short.MAX_VALUE)
         );
 
-        jPanel12.setBackground(new java.awt.Color(102, 0, 102));
+        jPanel12.setBackground(new java.awt.Color(255, 255, 255));
+
+        searchText.setText("                                    ΑΝΑΖΗΤΗΣΗ");
+        searchText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTextActionPerformed(evt);
+            }
+        });
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Όνομα", "Barcode"}));
+        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+
+        attribute1Field.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                attribute1FieldActionPerformed(evt);
+            }
+        });
+
+        attribute2Field.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                attribute2FieldActionPerformed(evt);
+            }
+        });
+
+        attribute4Field.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                attribute4FieldActionPerformed(evt);
+            }
+        });
+
+        saveButton.setText("ΑΠΟΘΗΚΕΥΣΗ");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
+
+        Products.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        ProductTable.setViewportView(Products);
+
+        jButton8.setText("Show Products");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Ποσότητα");
+
+        jLabel3.setText("ΦΠΑ");
+
+        jLabel4.setText("Τιμή");
+
+        attribute3Field.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                attribute3FieldActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Barcode");
+
+        jLabel6.setText("Είδος");
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "τεμάχια", "κουτιά", "εξάδες", "κιλά","πακέτα","γραμμάρια","λίτρα" }));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
         jPanel12Layout.setHorizontalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1158, Short.MAX_VALUE)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addGap(261, 261, 261)
+                .addComponent(searchText, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(57, 57, 57)
+                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel12Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(attribute3Field, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel12Layout.createSequentialGroup()
+                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel5))
+                        .addGap(45, 45, 45)
+                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(attribute1Field, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(attribute2Field)
+                                .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(attribute4Field, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
+                .addComponent(ProductTable, javax.swing.GroupLayout.PREFERRED_SIZE, 714, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton8)
+                .addGap(290, 290, 290))
         );
         jPanel12Layout.setVerticalGroup(
             jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 705, Short.MAX_VALUE)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel12Layout.createSequentialGroup()
+                        .addGap(115, 115, 115)
+                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel12Layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(28, 28, 28)
+                                .addComponent(jLabel6))
+                            .addGroup(jPanel12Layout.createSequentialGroup()
+                                .addComponent(attribute3Field, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(1, 1, 1)
+                                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(attribute2Field, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(attribute4Field, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5)
+                            .addComponent(attribute1Field, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(93, 93, 93)
+                        .addComponent(saveButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel12Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ProductTable, javax.swing.GroupLayout.PREFERRED_SIZE, 580, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(88, Short.MAX_VALUE))
+        );
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jLabel8.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        jLabel8.setText("ΣΥΝΟΛΟ");
+
+        jButton9.setFont(new java.awt.Font("Lucida Grande", 0, 14)); // NOI18N
+        jButton9.setText("ΟΛΟΚΛΗΡΩΣΗ");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+
+        jTextField3.setText("Barcode");
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
+
+        jLabel9.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(749, 749, 749)
+                        .addComponent(jLabel8)
+                        .addGap(49, 49, 49)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel13Layout.createSequentialGroup()
+                        .addGap(391, 391, 391)
+                        .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(35, Short.MAX_VALUE))
+        );
+        jPanel13Layout.setVerticalGroup(
+            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel13Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 611, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(86, 86, 86))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1170, Short.MAX_VALUE)
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
                     .addGap(0, 0, 0)
@@ -540,9 +630,9 @@ public class mainMenu extends javax.swing.JFrame {
                     .addGap(0, 0, 0)))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
-                    .addGap(0, 0, 0)
+                    .addContainerGap()
                     .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(0, 0, 0)))
+                    .addContainerGap()))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
                     .addGap(0, 0, 0)
@@ -558,10 +648,15 @@ public class mainMenu extends javax.swing.JFrame {
                     .addGap(0, 0, 0)
                     .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGap(0, 0, 0)))
+            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 800, Short.MAX_VALUE)
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
                     .addGap(0, 0, 0)
@@ -583,10 +678,7 @@ public class mainMenu extends javax.swing.JFrame {
                     .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGap(0, 0, 0)))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel4Layout.createSequentialGroup()
-                    .addGap(0, 0, 0)
-                    .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(0, 0, 0)))
+                .addComponent(jPanel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
                     .addGap(0, 0, 0)
@@ -602,6 +694,11 @@ public class mainMenu extends javax.swing.JFrame {
                     .addGap(0, 0, 0)
                     .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGap(0, 0, 0)))
+            .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel4Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(jPanel13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -619,8 +716,8 @@ public class mainMenu extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -666,6 +763,7 @@ public class mainMenu extends javax.swing.JFrame {
         jPanel10.setVisible(false);
         jPanel11.setVisible(false);
         jPanel12.setVisible(false);
+        jPanel13.setVisible(false);
     }//GEN-LAST:event_jButton1MouseClicked
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
@@ -681,6 +779,7 @@ public class mainMenu extends javax.swing.JFrame {
         jPanel10.setVisible(false);
         jPanel11.setVisible(false);
         jPanel12.setVisible(false);
+        jPanel13.setVisible(false);
     }//GEN-LAST:event_jButton2MouseClicked
 
     private void jButton5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton5MouseClicked
@@ -692,6 +791,7 @@ public class mainMenu extends javax.swing.JFrame {
         jPanel10.setVisible(false);
         jPanel11.setVisible(false);
         jPanel12.setVisible(false);
+        jPanel13.setVisible(false);
     }//GEN-LAST:event_jButton5MouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
@@ -703,6 +803,7 @@ public class mainMenu extends javax.swing.JFrame {
         jPanel10.setVisible(false);
         jPanel11.setVisible(false);
         jPanel12.setVisible(false);
+        jPanel13.setVisible(false);
     }//GEN-LAST:event_jButton3MouseClicked
 
     private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton4MouseClicked
@@ -714,6 +815,7 @@ public class mainMenu extends javax.swing.JFrame {
         jPanel10.setVisible(true);
         jPanel11.setVisible(false);
         jPanel12.setVisible(false);
+        jPanel13.setVisible(false);
     }//GEN-LAST:event_jButton4MouseClicked
 
     private void jButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton6MouseClicked
@@ -725,6 +827,7 @@ public class mainMenu extends javax.swing.JFrame {
         jPanel10.setVisible(false);
         jPanel11.setVisible(true);
         jPanel12.setVisible(false);
+        jPanel13.setVisible(false);
     }//GEN-LAST:event_jButton6MouseClicked
 
     private void jButton7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton7MouseClicked
@@ -736,282 +839,691 @@ public class mainMenu extends javax.swing.JFrame {
         jPanel10.setVisible(false);
         jPanel11.setVisible(false);
         jPanel12.setVisible(true);
+        jPanel13.setVisible(false);
     }//GEN-LAST:event_jButton7MouseClicked
 
+    private void searchTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextActionPerformed
+        addSearchBox();
+    }//GEN-LAST:event_searchTextActionPerformed
+
+    private void attribute1FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attribute1FieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_attribute1FieldActionPerformed
+
+    private void attribute2FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attribute2FieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_attribute2FieldActionPerformed
+
+    private void attribute4FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attribute4FieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_attribute4FieldActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+
+        String quantity = attribute3Field.getText();
+        String fpa = attribute2Field.getText();
+        String price = attribute4Field.getText();
+        String barcode = attribute1Field.getText();
+        
+        
+        if (checkAlterations(quantity, fpa, price, barcode)) {
+        try {
+            saveChanges();
+            JOptionPane.showMessageDialog(this, "Οι αλλαγές αποθηκεύτηκαν επιτυχώς");
+            updateTable();  
+        } catch (SQLException | ClassNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, "Σφάλμα κατά την αποθήκευση: " + ex.getMessage());
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Παρακαλώ ελέγξτε τις τιμές που εισάγατε.");
+    }
+    }//GEN-LAST:event_saveButtonActionPerformed
+
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        DefaultTableModel model = (DefaultTableModel)automated_order_table.getModel();
-        
-        String added_prod_name = aut_prod_name_jtf.getText();
-        String string_quan = aut_prod_quan_jtf.getText();
-        int added_quan = Integer.parseInt(string_quan);
-        String added_quan_type = (String)quan_type_jcb.getSelectedItem();
-        
-        int numRows = automated_order_table.getRowCount();
-        model.setRowCount(numRows);
-        Object[] row = new Object[3];
-        row[0] = added_prod_name;
-        row[1] = added_quan;
-        row[2] = added_quan_type;
-        model.addRow(row);     
-        
-        aut_prod_name_jtf.setText("");
-        aut_prod_quan_jtf.setText("");
+
+        try {
+            DefaultTableModel model = (DefaultTableModel) Products.getModel();
+            model.setColumnIdentifiers(new String[]{"Όνομα", "Ποσότητα","Είδος", "ΦΠΑ", "Τιμή", "Barcode"});
+            model.setRowCount(0);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost");
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT product_name, quantity, quantity_type, fpa, price, product_barcode FROM product_Storage")) {
+
+                while (resultSet.next()) {
+                    String name = resultSet.getString("product_name");
+                    String quantity = resultSet.getString("quantity");
+                    String quantity_type = resultSet.getString("quantity_type");
+                    String fpa = resultSet.getString("fpa");
+                    String price = resultSet.getString("price");
+                    String barcode = resultSet.getString("product_barcode");
+
+                    String[] product_info = {name, quantity,quantity_type, fpa, price, barcode};
+                    model.addRow(product_info);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }   catch (ClassNotFoundException ex) {
+        }
     }//GEN-LAST:event_jButton8ActionPerformed
 
+    private void attribute3FieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_attribute3FieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_attribute3FieldActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        try {
+            checkCredentials();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(createReceipt.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(createReceipt.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+        try {
+            searchBarcodeAndAddToReceipt();
+        } catch (SQLException ex) {
+            Logger.getLogger(mainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(mainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            displayReceiptDetails();
+        } catch (SQLException ex) {
+            Logger.getLogger(mainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(mainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jTextField3ActionPerformed
+
+    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox1ActionPerformed
+
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        int selectedRow = automated_order_table.getSelectedRow();
-        DefaultTableModel model = (DefaultTableModel)automated_order_table.getModel();
-        
-        String string_quantity = aut_prod_quan_jtf.getText();
-        int new_quantity = Integer.parseInt(string_quantity);
-        model.setValueAt(new_quantity, selectedRow, 1);
-        
-        aut_prod_name_jtf.setText("");
-        aut_prod_quan_jtf.setText("");
+        try {
+            calculateReceiptTotalCost();
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(mainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String email = JOptionPane.showInputDialog(this, "Εισάγετε το email του πελάτη:", "Εισαγωγή Email", JOptionPane.PLAIN_MESSAGE);
+        try {
+            checkEmail(email);
+        } catch (ClassNotFoundException | SQLException ex) {
+            Logger.getLogger(mainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            downloadReceipt();
+        } catch (ClassNotFoundException | SQLException | IOException ex) {
+            Logger.getLogger(mainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jButton9ActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        Connection myConn = null;
-        Statement stm = null;
-        ResultSet myRs = null;
-        
-        String user = "root";
-        String pass = "Skazas082002";
-        
-        try{
-                myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/simple", user, pass);
-               
-                String sql1 = "SELECT supplier_name FROM supplier";
-                stm = myConn.createStatement();
-                myRs = stm.executeQuery(sql1);
-                if(automated_order_jcb.getItemCount() == 0){
-                    while(myRs.next()){
-                        String code = myRs.getString("supplier_name");
-                        automated_order_jcb.addItem(code);
-                    }
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+      
+    }//GEN-LAST:event_jComboBox2ActionPerformed
+private void addListener() {
+    if(jComboBox2.getItemCount() == 0){
+                    jComboBox2.addItem("τεμάχια");
+                    jComboBox2.addItem("κουτιά");
+                    jComboBox2.addItem("εξάδες");
+                    jComboBox2.addItem("κιλά");
+                    jComboBox2.addItem("πακέτα");
+                    jComboBox2.addItem("γρμμάρια");
+                    jComboBox2.addItem("λίτρα");
                 }
-                
-                if(quan_type_jcb.getItemCount() == 0){
-                    quan_type_jcb.addItem("τεμάχια");
-                    quan_type_jcb.addItem("κουτιά");
-                    quan_type_jcb.addItem("εξάδες");
-                    quan_type_jcb.addItem("κιλά");
-                    quan_type_jcb.addItem("πακέτα");
-                    quan_type_jcb.addItem("γρμμάρια");
-                    quan_type_jcb.addItem("λίτρα");
-                }
-        }catch(SQLException exc){
-               exc.printStackTrace();
-        }finally{
-            try{
-                if(myRs != null){
-                    myRs.close();
-                }
-                if(stm != null){
-                    stm.close();
-                }
-                if(myConn != null){
-                    myConn.close();
-                }
-            }catch(SQLException exc){
-                   exc.printStackTrace();
-            }
-        }     
-    }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void automated_order_jcbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_automated_order_jcbActionPerformed
-        String selectedItem = (String) automated_order_jcb.getSelectedItem();
-        Connection myConn = null;
-        Statement stm = null;
-        ResultSet myRs = null;
-        PreparedStatement pstmt = null;
-        
-        String user = "root";
-        String pass = "Skazas082002";
-        
-        try{
-                myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/simple", user, pass);
+    Products.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        public void valueChanged(ListSelectionEvent e) {
+            int selectedRow = Products.getSelectedRow();
+            if (selectedRow != -1) {
+                String quantity = Products.getValueAt(selectedRow, 1).toString();
+                String type = Products.getValueAt(selectedRow,2).toString();
+                String fpa = Products.getValueAt(selectedRow, 3).toString();
+                String price = Products.getValueAt(selectedRow, 4).toString();
+                String barcode = Products.getValueAt(selectedRow,5).toString();
+
+                attribute3Field.setText(quantity);
+                attribute1Field.setText(barcode);
+                attribute2Field.setText(fpa);
+                attribute4Field.setText(price);
+                jComboBox2.setSelectedItem(type);
                 
-                LocalDate currentDate = LocalDate.now();
-                DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MM");
-                String currentMonth = currentDate.format(monthFormatter);
-        
-                String sql2 = "SELECT prod_inv_name, ROUND(AVG(prod_inv_quantity)) AS av_quantity, prod_inv_quantity_type FROM product_Invoice JOIN Invoice ON prod_inv_id = invoice_id JOIN supplier ON inv_supplier_id = supplier_id WHERE supplier_name = ? AND MONTH(date) = ? GROUP BY prod_inv_name";
-                pstmt = myConn.prepareStatement(sql2);
-                pstmt.setString(1, selectedItem);
-                pstmt.setString(2, currentMonth);
-                myRs = pstmt.executeQuery();
-                ArrayList<automatedOrder> usersList = new ArrayList<>();
-                automatedOrder autOr;
-                while(myRs.next()){
-                    autOr = new automatedOrder(myRs.getString("prod_inv_name"), myRs.getInt("av_quantity"), myRs.getString("prod_inv_quantity_type"));
-                    usersList.add(autOr);    
-                }
-                DefaultTableModel model = (DefaultTableModel)automated_order_table.getModel();
-                model.setRowCount(0);
-                Object[] row = new Object[3];
-                for(int i = 0; i<usersList.size(); i++){
-                    row[0] = usersList.get(i).getprod_inv_name();
-                    row[1] = usersList.get(i).getav_quantity();
-                    row[2] = usersList.get(i).getprod_inv_quantity_type();
-                    model.addRow(row);
-                }
-                
-        }catch(SQLException exc){
-               exc.printStackTrace();
-        }finally{
-            try{
-                if(myRs != null){
-                    myRs.close();
-                }
-                if(stm != null){
-                    stm.close();
-                }
-                if(myConn != null){
-                    myConn.close();
-                }
-            }catch(SQLException exc){
-                   exc.printStackTrace();
             }
         }
-    }//GEN-LAST:event_automated_order_jcbActionPerformed
+    });
 
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+} 
+private boolean checkAlterations(String quantity, String fpa, String price, String barcode) {
+    return isValidQuantity(quantity) && isValidFpa(fpa) && isValidPrice(price) && isValidBarcode(barcode);
+}
+
+private boolean isValidBarcode(String barcode) {
+    return barcode != null && barcode.length() == 13;
+
+}
+
+private boolean isValidPrice(String price) {
+   try {
+        float p = Float.parseFloat(price);
+        return p > 0;
+    } catch (NumberFormatException e) {
+        return false;
+    }
+   
+}
+
+private boolean isValidFpa(String fpa) {
+    try {
+        int f = Integer.parseInt(fpa);
+        return f == 0 || f == 6 || f == 13 || f == 24;
+    } catch (NumberFormatException e) {
+        return false;
+    }
+}
+
+  private boolean isValidQuantity(String quantity) {
+    try {
+        float q = Float.parseFloat(quantity);
+        return q >= 0;
+    } catch (NumberFormatException e) {
+        return false;
+    }
+}
+    private void updateTable() throws SQLException, ClassNotFoundException {
+        try {
+            DefaultTableModel model = (DefaultTableModel) Products.getModel();
+            model.setColumnIdentifiers(new String[]{"Όνομα", "Ποσότητα","Είδος", "ΦΠΑ", "Τιμή", "Barcode"});
+            model.setRowCount(0);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost");
+             PreparedStatement statement = connection.prepareStatement("SELECT product_name, quantity,quantity_type, fpa, price, product_barcode FROM product_Storage")) {
+           
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+               String name = resultSet.getString("product_name");
+               String product_quantity = resultSet.getString("quantity");
+               String quantity_type = resultSet.getString("quantity_type");
+               String product_fpa = resultSet.getString("fpa");
+               String product_price = resultSet.getString("price");
+               String product_barcode = resultSet.getString("product_barcode");
+
+                String[] product_info = {name, product_quantity,quantity_type, product_fpa, product_price, product_barcode};
+                model.addRow(product_info);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(mainMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }   catch (ClassNotFoundException ex) {
+        }
+    }
+    private void addSearchBox(){
+        jComboBox1.setSelectedIndex(0); 
+        jComboBox1.addActionListener((ActionEvent e) -> {
+        String selectedOption = (String) jComboBox1.getSelectedItem();
             
-        int selectedRow = automated_order_table.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Please select a row to remove.");
-            return;
-        }
-        DefaultTableModel model = (DefaultTableModel)automated_order_table.getModel();
-        model.removeRow(selectedRow);
-        
-        aut_prod_name_jtf.setText("");
-        aut_prod_quan_jtf.setText("");
-    }//GEN-LAST:event_jButton10ActionPerformed
-
-    private void extractInvoice(){
-        String selectedItem = (String) automated_order_jcb.getSelectedItem();
-        
-        JFileChooser fileChooser = new JFileChooser();
-        int userSelection = fileChooser.showSaveDialog(this);
-        if (userSelection == JFileChooser.APPROVE_OPTION) {
-            try {
-                FileWriter writer = new FileWriter(fileChooser.getSelectedFile());
-                writer.write("Προμηθευτής: " + selectedItem + "\n");
-
-                int numRows = automated_order_table.getRowCount();
-                int numCols = automated_order_table.getColumnCount();
-
-                for (int i = 0; i < numCols-1; i++) {
-                    writer.write(automated_order_table.getColumnName(i) + "\t\t\t\t\t");
-                }
-                writer.write("\n");
-
-                for (int i = 0; i < numRows; i++) {
-                    for (int j = 0; j < numCols-1; j++) {
-                        writer.write(automated_order_table.getValueAt(i, j).toString() + "\t");
-                    }
-                    writer.write("\n");
-                }
-                writer.close();
-            } catch (IOException ex) {
-                Logger.getLogger(mainMenu.class.getName()).log(Level.SEVERE, null, ex);
+            if (selectedOption.equals("Όνομα")) {
+                String productName = searchText.getText();
+                searchbyName(productName);
+            } else if (selectedOption.equals("Barcode")) {
+                String barcode = searchText.getText();
+                searchByBarcode(barcode);
+               
             }
+        });
+    }
+    private void saveChanges() {
+        String quantity = attribute3Field.getText();
+        String fpa = attribute2Field.getText();
+        String price = attribute4Field.getText();
+        String barcode = attribute1Field.getText();
+        String type =(String)jComboBox2.getSelectedItem();
+        
+        int selectedRow = Products.getSelectedRow();
+
+        
+        if (selectedRow != -1) {
+            String productName = Products.getValueAt(selectedRow, 0).toString();
+
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost");
+                PreparedStatement statement = connection.prepareStatement("UPDATE product_Storage SET quantity = ?, fpa = ?, price = ?, product_barcode = ?, quantity_type = ? WHERE product_name = ?")) {
+
+                statement.setString(1, quantity);
+                statement.setString(2, fpa);
+                statement.setString(3, price);
+                statement.setString(4,barcode);
+                statement.setString(5,type);
+                statement.setString(6,productName);
+
+                int introwsUpdated = statement.executeUpdate();
+
+             } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // No row selected
+            System.out.println("No row selected.");
+        }
+    
+}
+    
+    private void searchbyName(String productName) {
+    try {
+        DefaultTableModel model = (DefaultTableModel) Products.getModel();
+        model.setColumnIdentifiers(new String[]{"Όνομα", "Ποσότητα","Είδος", "ΦΠΑ", "Τιμή", "Barcode"});
+        model.setRowCount(0);
+        Class.forName("com.mysql.cj.jdbc.Driver");
+
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost");
+             PreparedStatement statement = connection.prepareStatement("SELECT product_name, quantity,quantity_type, fpa, price, product_barcode FROM product_Storage WHERE product_name LIKE ?")) {
+            
+            statement.setString(1, "%" + productName + "%");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                String name = resultSet.getString("product_name");
+                String quantity = resultSet.getString("quantity");
+                String type = resultSet.getString("quantity_type");
+                String fpa = resultSet.getString("fpa");
+                String price = resultSet.getString("price");
+                String barcode = resultSet.getString("product_barcode");
+                
+                String[] product_info = {name, quantity,type,fpa, price, barcode};
+                model.addRow(product_info);
+            }
+        }
+    } catch (SQLException | ClassNotFoundException e) {
+        e.printStackTrace();
+    }
+}
+    private void searchByBarcode(String barcode) {
+        try {
+            DefaultTableModel model = (DefaultTableModel) Products.getModel();
+            model.setColumnIdentifiers(new String[]{"Όνομα", "Ποσότητα","Είδος", "ΦΠΑ", "Τιμή", "Barcode"});
+            model.setRowCount(0);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost");
+                 PreparedStatement statement = connection.prepareStatement("SELECT product_name, quantity,quantity_type, fpa, price, product_barcode FROM product_Storage WHERE product_barcode = ?")) {
+                
+                statement.setString(1, barcode); 
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    while (resultSet.next()) {
+                        String name = resultSet.getString("product_name");
+                        String quantity = resultSet.getString("quantity");
+                        String type = resultSet.getString("quantity_type");
+                        String fpa = resultSet.getString("fpa");
+                        String price = resultSet.getString("price");
+                        String barcode_base = resultSet.getString("product_barcode");
+                        
+                        String[] product_info = {name, quantity,type, fpa, price, barcode_base};
+                        model.addRow(product_info);
+                    }
+                }
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
     }
     
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-        extractInvoice();
+    private Integer checkCredentials() throws ClassNotFoundException, SQLException {
+    String enteredPassword = jTextField1.getText();
+    Integer userId = null;
+
+    Class.forName("com.mysql.cj.jdbc.Driver");
+
+    try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost");
+         PreparedStatement statement = connection.prepareStatement("SELECT user_id FROM user WHERE password = ?")) {
+        statement.setString(1, enteredPassword);
         
-        Connection myConn = null;
-        Statement stm = null;
-        ResultSet myRs = null;
-        
-        String user = "root";
-        String pass = "Skazas082002";
-        try{
-               myConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/simple", user, pass);
-               
-               String supplier_name = (String)automated_order_jcb.getSelectedItem();
-               String sql3 = "SELECT supplier_id FROM supplier WHERE supplier_name = '" + supplier_name + "'";
-               stm = myConn.createStatement();
-               myRs = stm.executeQuery(sql3);
-               int sup_id = 0;
-               if (myRs.next()) {
-                    sup_id = myRs.getInt("supplier_id");
-               }
-               
-               PreparedStatement statement1;
-               String sql4 = "INSERT INTO orders(order_id, order_supplier_id) VALUES(null,?)";
-               statement1 = myConn.prepareStatement(sql4);
-               statement1.setInt(1, sup_id);
-               statement1.execute();
-               
-               int numRows = automated_order_table.getRowCount();
-               int numCols = automated_order_table.getColumnCount();
-               DefaultTableModel model = (DefaultTableModel)automated_order_table.getModel();
-               
-               String sql5 = "SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1";
-               stm = myConn.createStatement();
-               myRs = stm.executeQuery(sql5);
-               int ord_id = 0;
-               if (myRs.next()) {
-                    ord_id = myRs.getInt("order_id");
-               }
-               
-               PreparedStatement statement2;
-               for (int i = 0; i < numRows; i++) {
-                    String name = model.getValueAt(i, 0).toString();
-                    String quantity = model.getValueAt(i, 1).toString();
-                    String quan_type = model.getValueAt(i, 2).toString();
-                    
-                    String sql6 = "INSERT INTO product_Order VALUES(null,?,?,?,?)";
-                    statement2 = myConn.prepareStatement(sql6);
-                    statement2.setString(1, name);
-                    statement2.setInt(2, ord_id);
-                    statement2.setInt(3, Integer.parseInt(quantity));
-                    statement2.setString(4, quan_type);
-                    
-                    statement2.execute();
-                }
-               
-        }catch(SQLException exc){
-               exc.printStackTrace();
-        }finally{
-            try{
-                if(myRs != null){
-                    myRs.close();
-                }
-                if(myConn != null){
-                    System.out.println("Connection Successful");
-                    myConn.close();
-                }
-            }catch(SQLException exc){
-                   exc.printStackTrace();
+        try (ResultSet resultSet = statement.executeQuery()) {
+            if (resultSet.next()) {
+                userId = resultSet.getInt("user_id");
             }
         }
-    }//GEN-LAST:event_jButton11ActionPerformed
+    }
+ 
 
-    private void jButton11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton11MouseClicked
+    if (userId != null) {
+        // Ελέγξτε αν το userId υπάρχει στον πίνακα employee
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost");
+             PreparedStatement statement = connection.prepareStatement("SELECT employee_id FROM employee WHERE employee_id = ?")) {
+            statement.setInt(1, userId);
 
-    }//GEN-LAST:event_jButton11MouseClicked
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                   //JOptionPane.showMessageDialog(this, "Σωστός κωδικός");
+                    jPanel6.setVisible(false);
+                    jPanel13.setVisible(true);
+                    return userId; 
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ο χρήστης δεν είναι υπάλληλος.");
+                }
+            }
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Λάθος κωδικός");
+    }
 
-    private void aut_prod_name_jtfActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aut_prod_name_jtfActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_aut_prod_name_jtfActionPerformed
-
-    private void automated_order_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_automated_order_tableMouseClicked
-        DefaultTableModel model = (DefaultTableModel)automated_order_table.getModel();
+    return null;
+}
+    
+    private int createReceipt() throws SQLException, ClassNotFoundException {
+    int employeeId = checkCredentials();
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost");
+    String insertReceiptSQL = "INSERT INTO receipt (date, res_employee_id) VALUES (NOW(), ?)";
+    
+    try (PreparedStatement statement = connection.prepareStatement(insertReceiptSQL, Statement.RETURN_GENERATED_KEYS)) {
+        statement.setInt(1, employeeId);
         
-        String name = model.getValueAt(automated_order_table.getSelectedRow(), 0).toString();
-        String quantity = model.getValueAt(automated_order_table.getSelectedRow(), 1).toString();
-        String quan_type = model.getValueAt(automated_order_table.getSelectedRow(), 2).toString();
+        int affectedRows = statement.executeUpdate();
+        if (affectedRows == 0) {
+            throw new SQLException("Creating receipt failed, no rows affected.");
+        }
+
+        try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+                return generatedKeys.getInt(1); 
+            } else {
+                throw new SQLException("Creating receipt failed, no ID obtained.");
+            }
+        }
+    }
+}
+    
+  private int getLatestReceiptId() throws SQLException, ClassNotFoundException {
+    String query = "SELECT MAX(receipt_id) AS max_receipt_id FROM receipt";
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost");
+    try (PreparedStatement statement = connection.prepareStatement(query);
+         ResultSet resultSet = statement.executeQuery()) {
+        if (resultSet.next()) {
+            return resultSet.getInt("max_receipt_id");
+        } else {
+            throw new SQLException("Failed to retrieve the latest receipt ID.");
+        }
+    }
+}
+
+private void searchBarcodeAndAddToReceipt() throws SQLException, ClassNotFoundException { 
+    String barcode = jTextField3.getText();
+    String searchProduct = "SELECT * FROM product_Storage WHERE product_barcode = ?";
+    DefaultTableModel model = new DefaultTableModel(new String[]{"Όνομα", "Ποσότητα", "Είδος", "ΦΠΑ", "Τιμή"}, 0);
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost")) {
+        try (PreparedStatement searchProductStatement = connection.prepareStatement(searchProduct)) {
+            searchProductStatement.setString(1, barcode);
+            try (ResultSet productResultSet = searchProductStatement.executeQuery()) {
+                if (productResultSet.next()) {
+                    String productName = productResultSet.getString("product_name");
+                    int fpa = productResultSet.getInt("fpa");
+                    float price = productResultSet.getFloat("price");
+                    String quantityType = productResultSet.getString("quantity_type");
+                    int quantity =1;
+                    model.addRow(new Object[]{productName, quantity, quantityType, fpa, price});
+    }
+                 jTable1.setModel(model);
+}
+
+}
+    }
+}
         
-        aut_prod_name_jtf.setText(name);
-        aut_prod_quan_jtf.setText(quantity);
-        quan_type_jcb.setSelectedItem(quan_type);
-    }//GEN-LAST:event_automated_order_tableMouseClicked
+private void displayReceiptDetails() throws SQLException, ClassNotFoundException {
+    String query = "SELECT pr.prod_rec_name, pr.prod_rec_quantity, pr.prod_rec_quantity_type, ps.fpa, ps.price " +
+                   "FROM product_Receipt pr " +
+                   "JOIN product_Storage ps ON pr.prod_rec_name = ps.product_name " +
+                   "WHERE pr.prod_rec_id = ?";
+    int receiptId = getLatestReceiptId();  
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost");
+         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+        preparedStatement.setInt(1, receiptId);
+
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            
+            DefaultTableModel model = new DefaultTableModel(new String[]{"Όνομα", "Ποσότητα", "Είδος", "ΦΠΑ", "Τιμή"}, 0);
+
+            
+            while (resultSet.next()) {
+                String productName = resultSet.getString("prod_rec_name");
+                float quantity = resultSet.getFloat("prod_rec_quantity");
+                String quantityType = resultSet.getString("prod_rec_quantity_type");
+                int fpa = resultSet.getInt("fpa");
+                float price = resultSet.getFloat("price");
+
+                model.addRow(new Object[]{productName, quantity, quantityType, fpa, price});
+            }
+
+            
+            jTable1.setModel(model);
+        }
+    }
+}
+
+private void calculateReceiptTotalCost() throws SQLException, ClassNotFoundException {
+    int receiptId = getLatestReceiptId();
+    String query = "SELECT SUM(pr.prod_rec_quantity * ps.price) AS total_cost " +
+                   "FROM product_Receipt pr " +
+                   "JOIN product_Storage ps ON pr.prod_rec_name = ps.product_name " +
+                   "WHERE pr.prod_rec_id = ?";
+    
+    float cost = 0.0f;
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost");
+         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+        preparedStatement.setInt(1, receiptId);
+
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+           if (resultSet.next()) {
+              cost = resultSet.getFloat("total_cost");
+              jLabel9.setText(String.format("%.2f €", cost));
+        
+           }  
+        }       
+    
+ 
+    }   
+}
+
+private void checkEmail(String email) throws ClassNotFoundException, SQLException{
+    int receiptId = getLatestReceiptId();
+    String query = "SELECT COUNT(*) AS count FROM customer WHERE email = ?";
+    boolean customerExists = false;
+
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost");
+         PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setString(1, email);
+
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                int count = resultSet.getInt("count");
+                customerExists = count > 0;
+            }
+        }
+    }
+    if(customerExists){
+         updateCustomer(email, receiptId);
+        
+    } else {
+        createNewCustomer(email, receiptId);
+    }
+}
+
+private void updateCustomer(String email, int receiptId) throws ClassNotFoundException, SQLException {
+    String selectQuery = "SELECT points, voucher_count FROM customer WHERE email = ?";
+    String updateCustomerQuery = "UPDATE customer SET points = ?, voucher_count = ? WHERE email = ?";
+    String updateReceiptQuery = "UPDATE receipt SET customer_email = ?, sum = ?, receipt_points = ?, voucher = ? WHERE receipt_id = ?";
+    
+
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost")) {
+        int points = 0;
+        int voucherCount = 0;
+        String totalCostString = jLabel9.getText().replace("€", "").trim();
+        totalCostString = totalCostString.replace(",", "."); 
+        float totalCost = Float.parseFloat(totalCostString);
+
+        try (PreparedStatement selectStatement = connection.prepareStatement(selectQuery)) {
+            selectStatement.setString(1, email);
+            try (ResultSet resultSet = selectStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    points = resultSet.getInt("points");
+                    voucherCount = resultSet.getInt("voucher_count");
+                }
+            }
+        }
+
+        int newPoints = calculatePoints(totalCost);
+        points += newPoints;
+        
+        int newVouchers = checkAddVouchers(points);
+        voucherCount += newVouchers;
+        points %= 100;
+        
+           while (voucherCount > 0 && totalCost >= 3) {
+                        totalCost -= 3;
+                        voucherCount--;
+                    }
+
+       
+        try (PreparedStatement updateCustomerStatement = connection.prepareStatement(updateCustomerQuery)) {
+            updateCustomerStatement.setInt(1, points);
+            updateCustomerStatement.setInt(2, voucherCount);
+            updateCustomerStatement.setString(3, email);
+            updateCustomerStatement.executeUpdate();
+        }
+
+        try (PreparedStatement updateReceiptStatement = connection.prepareStatement(updateReceiptQuery)) {
+            updateReceiptStatement.setString(1, email);
+            updateReceiptStatement.setFloat(2, totalCost);
+            updateReceiptStatement.setInt(3, newPoints);
+            updateReceiptStatement.setInt(4, newVouchers);
+            updateReceiptStatement.setInt(5, receiptId);
+            updateReceiptStatement.executeUpdate();
+        }
+        String totalCostStr = String.format("%.2f €", totalCost);
+        jLabel9.setText(totalCostStr);
+    }
+}
+
+private int calculatePoints(float cost){
+    return (int) (cost / 3);
+  
+}
+
+private int checkAddVouchers(int points){
+    return points / 100;
+}
+
+private void createNewCustomer(String email, int receiptId) throws ClassNotFoundException, SQLException {
+    String insertQuery = "INSERT INTO customer (email, points, voucher_count) VALUES (?, ?, ?)";
+    String updateQuery = "UPDATE receipt SET customer_email = ?, sum = ?, receipt_points = ?, voucher = ? WHERE receipt_id = ?";
+    String totalCostString = jLabel9.getText().replace("€", "").trim();
+    totalCostString = totalCostString.replace(",", "."); 
+    float totalCost = Float.parseFloat(totalCostString);
+    
+    int points = calculatePoints(totalCost);
+    int vouchers = checkAddVouchers(points);
+    points %= 100;
+        
+           while (vouchers > 0 && totalCost >= 3) {
+                        totalCost -= 3;
+                        vouchers--;
+                    }
+    
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost")) {
+        // Insert the new customer
+        try (PreparedStatement insertStatement = connection.prepareStatement(insertQuery)) {
+            insertStatement.setString(1, email);
+            insertStatement.setInt(2, points);
+            insertStatement.setInt(3, vouchers);
+            insertStatement.executeUpdate();
+        }
+
+        // Update the receipt 
+        try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+            updateStatement.setString(1, email);
+            updateStatement.setFloat(2, totalCost);
+            updateStatement.setInt(3, points);
+            updateStatement.setInt(4, vouchers);
+            updateStatement.setInt(5, receiptId);
+            updateStatement.executeUpdate();
+        }
+        String totalCostStr = String.format("%.2f €", totalCost);
+        jLabel9.setText(totalCostStr);
+    }
+}
+
+private void clearTable(JTable table) {
+    DefaultTableModel model = (DefaultTableModel) table.getModel();
+    model.setRowCount(0);
+}
+
+private void downloadReceipt() throws ClassNotFoundException, SQLException, IOException{
+    int receiptId = getLatestReceiptId();
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    
+    try (Connection connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/simple", "root", "root_localhost")) {
+        String receiptQuery = "SELECT * FROM receipt WHERE receipt_id = ?";
+        String productQuery = "SELECT pr.prod_rec_name, pr.prod_rec_quantity, pr.prod_rec_quantity_type, ps.price, ps.fpa " +
+                              "FROM product_Receipt pr " +
+                              "JOIN product_Storage ps ON pr.prod_rec_name = ps.product_name " +
+                              "WHERE pr.prod_rec_id = ?";
+
+        try (PreparedStatement receiptStatement = connection.prepareStatement(receiptQuery);
+             PreparedStatement productStatement = connection.prepareStatement(productQuery)) {
+
+            receiptStatement.setInt(1, receiptId);
+            productStatement.setInt(1, receiptId);
+
+            try (ResultSet receiptResultSet = receiptStatement.executeQuery();
+                 ResultSet productResultSet = productStatement.executeQuery()) {
+
+                if (receiptResultSet.next()) {
+                    StringBuilder receiptContent = new StringBuilder();
+                    receiptContent.append("ID Απόδειξης: ").append(receiptResultSet.getInt("receipt_id")).append("\n");
+                    receiptContent.append("Ημερομηνία: ").append(receiptResultSet.getTimestamp("date")).append("\n");
+                    receiptContent.append("Σύνολο: ").append(receiptResultSet.getFloat("sum")).append(" €\n");
+                    receiptContent.append("ID Υπαλλήλου: ").append(receiptResultSet.getInt("res_employee_id")).append("\n");
+                    receiptContent.append("Email Πελάτη: ").append(receiptResultSet.getString("customer_email")).append("\n");
+                    receiptContent.append("Πόντοι: ").append(receiptResultSet.getInt("receipt_points")).append("\n");
+                    receiptContent.append("Voucher: ").append(receiptResultSet.getFloat("voucher")).append("\n");
+                    receiptContent.append("\nΠροϊόντα:\n");
+
+                    while (productResultSet.next()) {
+                        String productName = productResultSet.getString("prod_rec_name");
+                        float quantity = productResultSet.getFloat("prod_rec_quantity");
+                        String quantityType = productResultSet.getString("prod_rec_quantity_type");
+                        float price = productResultSet.getFloat("price");
+                        int fpa = productResultSet.getInt("fpa");
+
+                        receiptContent.append(String.format("%s, Ποσότητα: %.2f %s, Τιμή: %.2f €, ΦΠΑ: %d%%\n",
+                                productName, quantity, quantityType, price, fpa));
+                    }
+
+                    String fileName = "receipt_" + receiptId + ".txt";
+                    try (FileWriter fileWriter = new FileWriter(fileName)) {
+                        fileWriter.write(receiptContent.toString());
+                    }
+
+                    JOptionPane.showMessageDialog(null, "Receipt downloaded: " + fileName);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Receipt not found.");
+                }
+            }
+        }
+    }
+}
+
 
     /**
      * @param args the command line arguments
@@ -1019,19 +1531,25 @@ public class mainMenu extends javax.swing.JFrame {
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new mainMenu().setVisible(true);
+                try {
+                    new mainMenu().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(mainMenu.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(mainMenu.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField aut_prod_name_jtf;
-    private javax.swing.JTextField aut_prod_quan_jtf;
-    private javax.swing.JComboBox<String> automated_order_jcb;
-    private javax.swing.JTable automated_order_table;
+    private javax.swing.JScrollPane ProductTable;
+    private javax.swing.JTable Products;
+    private javax.swing.JTextField attribute1Field;
+    private javax.swing.JTextField attribute2Field;
+    private javax.swing.JTextField attribute3Field;
+    private javax.swing.JTextField attribute4Field;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -1040,15 +1558,22 @@ public class mainMenu extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -1058,8 +1583,10 @@ public class mainMenu extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JComboBox<String> quan_type_jcb;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JButton saveButton;
+    private javax.swing.JTextField searchText;
     // End of variables declaration//GEN-END:variables
 }
